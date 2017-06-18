@@ -1,0 +1,107 @@
+package com.example.adeogo.bakingapp.util;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Adeogo on 6/17/2017.
+ */
+
+public class JsonFormat {
+    public static List<String> getListName(String JSONresponse) throws JSONException {
+        List<String> listNames = new ArrayList<String>();
+        JSONArray jsonArray = new JSONArray(JSONresponse);
+        int lengthResponse = jsonArray.length();
+        for(int i = 0; i < lengthResponse;i++ ){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String name = jsonObject.getString("name");
+            listNames.add(name);
+        }
+        return listNames;
+    }
+
+    public static List<String> getListImagesUrl(String JSONresponse) throws JSONException {
+        List<String> listImageUrls = new ArrayList<String>();
+        JSONArray jsonArray = new JSONArray(JSONresponse);
+        int lengthResponse = jsonArray.length();
+        for(int i = 0; i < lengthResponse;i++ ){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String imageUrl = jsonObject.getString("image");
+            listImageUrls.add(imageUrl);
+        }
+        return listImageUrls;
+    }
+
+    public static List<Integer> getListServings(String JSONresponse) throws JSONException {
+        List<Integer> listServings = new ArrayList<Integer>();
+        JSONArray jsonArray = new JSONArray(JSONresponse);
+        int lengthResponse = jsonArray.length();
+        for(int i = 0; i < lengthResponse;i++ ){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            int serving = jsonObject.getInt("servings");
+            listServings.add(serving);
+        }
+        return listServings;
+    }
+
+    public static JSONArray getIngredientsArray(String JSONResponse, int id) throws JSONException {
+        JSONArray jsonArray = new JSONArray(JSONResponse);
+        JSONObject jsonObject = jsonArray.getJSONObject(id);
+        JSONArray ingredientsArray = jsonObject.getJSONArray("ingredients");
+        return ingredientsArray;
+    }
+
+    public static int getQuantityIngredient(JSONArray ingredientArray , int idIngredient) throws JSONException {
+        JSONObject jsonObject = ingredientArray.getJSONObject(idIngredient);
+        int quantity = jsonObject.getInt("quantity");
+        return quantity;
+    }
+
+    public static String getMeasureIngredient(JSONArray ingredientArray , int idIngredient) throws JSONException {
+        JSONObject jsonObject = ingredientArray.getJSONObject(idIngredient);
+        String measure = jsonObject.getString("measure");
+        return measure;
+    }
+
+    public static String getIngredient(JSONArray ingredientArray , int idIngredient) throws JSONException {
+        JSONObject jsonObject = ingredientArray.getJSONObject(idIngredient);
+        String ingredient = jsonObject.getString("ingredient");
+        return ingredient;
+    }
+
+    public static JSONArray getStepsArray(String JSONResponse, int id) throws JSONException {
+        JSONArray jsonArray = new JSONArray(JSONResponse);
+        JSONObject jsonObject = jsonArray.getJSONObject(id);
+        JSONArray stepsArray = jsonObject.getJSONArray("steps");
+        return stepsArray;
+    }
+
+    public static String getShortDescpStep(JSONArray stepsArray, int idStep) throws JSONException {
+        JSONObject jsonObject = stepsArray.getJSONObject(idStep);
+        String shortDescp = jsonObject.getString("shortDescription");
+        return shortDescp;
+    }
+
+    public static String getDescriptionStep(JSONArray stepsArray, int idStep) throws JSONException {
+        JSONObject jsonObject = stepsArray.getJSONObject(idStep);
+        String description = jsonObject.getString("description");
+        return description;
+    }
+
+    public static String getVideoUrl(JSONArray stepsArray, int idStep) throws JSONException {
+        JSONObject jsonObject = stepsArray.getJSONObject(idStep);
+        String videoUrl = jsonObject.getString("videoURL");
+        return videoUrl;
+    }
+
+    public static String getThumbnailUrl(JSONArray stepsArray, int idStep) throws JSONException {
+        JSONObject jsonObject = stepsArray.getJSONObject(idStep);
+        String thumbnailUrl = jsonObject.getString("thumbnailURL");
+        return thumbnailUrl;
+    }
+
+}
