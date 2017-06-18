@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -15,16 +16,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="#000"
             android:id="@+id/menu_name_tv"
             tools:text ="Pie Hoyusing Name"/>
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="#000"
             android:id="@+id/servings_tv"
-            tools:text="8 Servings"/>
+            tools:text="8rvings"/>
     </LinearLayout>
 
 </LinearLayout>

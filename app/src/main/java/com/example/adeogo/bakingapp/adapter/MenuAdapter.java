@@ -21,9 +21,9 @@ import java.util.List;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
-    private List<String> mMenuNameList ;
-    private List<Integer> mMenuServingsList;
-    private List<String> mMenuIconUrlList ;
+    private List<String> mMenuNameList = null;
+    private List<Integer> mMenuServingsList = null;
+    private List<String> mMenuIconUrlList = null;
     private Context mContext;
 
     public MenuAdapter(Context context,ListItemClickListener mOnClickListener){
@@ -69,10 +69,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         return mMenuServingsList.size();
     }
 
-   class MenuViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-       TextView nameTextView ;
-       TextView servingTextView;
-       ImageView menuImageView;
+   public class MenuViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+      public final TextView nameTextView ;
+      public final TextView servingTextView;
+      public final ImageView menuImageView;
 
        public MenuViewHolder(View itemView) {
            super(itemView);
@@ -95,5 +95,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
        mMenuNameList = menuNameList;
        mMenuIconUrlList = menuIconUrlList;
        mMenuServingsList = menuServingsList;
+       this.notifyDataSetChanged();
    }
 }

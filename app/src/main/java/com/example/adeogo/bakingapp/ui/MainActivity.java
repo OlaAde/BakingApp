@@ -1,4 +1,4 @@
-package com.example.adeogo.bakingapp;
+package com.example.adeogo.bakingapp.ui;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.adeogo.bakingapp.R;
 import com.example.adeogo.bakingapp.adapter.MenuAdapter;
 import com.example.adeogo.bakingapp.util.JsonFormat;
 import com.example.adeogo.bakingapp.util.NetworkUtil;
@@ -30,14 +32,15 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMenuAdapter = new MenuAdapter(this,this);
-        mRecyclerView.setAdapter(mMenuAdapter);
         TestTask testTask = new TestTask();
         testTask.execute(url);
+        mRecyclerView.setAdapter(mMenuAdapter);
+
     }
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-
+        Toast.makeText(this, ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
             String response = null;
             try {
                  response = NetworkUtil.getResponseFromHttpUrl(NetworkUtil.buildUrl(params[0]));
-                Log.v("Response", response);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
                 menuNameList = JsonFormat.getListName(s);
                 menuIconUrlList = JsonFormat.getListImagesUrl(s);
                 menuServingsList = JsonFormat.getListServings(s);
+                Log.v("Response", menuNameList.get(1));
+                Log.v("Response", menuIconUrlList.get(2));
+                Log.v("Response", menuServingsList.get(2).toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
