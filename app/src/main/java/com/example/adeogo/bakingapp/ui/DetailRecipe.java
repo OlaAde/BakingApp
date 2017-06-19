@@ -2,6 +2,7 @@ package com.example.adeogo.bakingapp.ui;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -45,6 +46,13 @@ public class DetailRecipe extends AppCompatActivity  {
                 .commit();
 
         TextView ingredientTextView = (TextView) findViewById(R.id.ingredient_list_tv);
-        ingredientTextView.setText(mIngredientsList.get(0));
+        String ingredientList;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i = 0 ; i < mIngredientsList.size(); i++){
+            stringBuilder.append("\n" + mQuantyIngredientsList.get(i)+ " " + mMeasureIngredientsList.get(i)+ " of " + mIngredientsList.get(i));
+        }
+        ingredientList = stringBuilder.toString();
+        ingredientTextView.setText(ingredientList);
     }
 }
