@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.example.adeogo.bakingapp.R;
 import com.example.adeogo.bakingapp.adapter.StepAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +48,7 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
         mRecyclerView.setHasFixedSize(true);
         mStepAdapter = new StepAdapter(mContext, this);
         mRecyclerView.setAdapter(mStepAdapter);
+
         mStepAdapter.swapData(mShrtStepDescList,mVideoStepUrlList);
         return rootView;
     }
