@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.adeogo.bakingapp.R;
-import com.example.adeogo.bakingapp.TestExo;
 import com.example.adeogo.bakingapp.adapter.StepAdapter;
 
 import java.util.List;
