@@ -140,9 +140,4 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         }
    }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
 }

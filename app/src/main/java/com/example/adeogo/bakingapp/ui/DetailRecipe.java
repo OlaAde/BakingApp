@@ -35,6 +35,7 @@ public class DetailRecipe extends AppCompatActivity  {
         mIngredientsList = intent.getStringArrayListExtra("IngredientsList");
         mMeasureIngredientsList = intent.getStringArrayListExtra("MeasureIngredientsList");
         mQuantyIngredientsList = intent.getIntegerArrayListExtra("QuantyIngredientsList");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

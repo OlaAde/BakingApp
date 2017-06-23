@@ -20,9 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.DetailRecipe"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity"/>
         <activity android:name=".ui.TestExo"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.DetailRecipe"/>
 
         <receiver android:name=".ui.BakingWidget">
             <intent-filter>
