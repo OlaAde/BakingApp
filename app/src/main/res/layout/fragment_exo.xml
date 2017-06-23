@@ -10,16 +10,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000">
+        android:background="@color/black">
 
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/media_view"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="@dimen/width_two_pane_1"
+            />
     </RelativeLayout>
 
 
@@ -29,7 +27,7 @@
         android:id="@+id/full_description_tv"
         android:fontFamily="sans-serif"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:padding="8dp"
+        android:padding="@dimen/ccommon_padding"
         android:maxLines = "10"
         android:scrollbars = "vertical"/>
 
