@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
                     null,
                     null,
                     null);
-
         }
 
         @Override
