@@ -19,8 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailRecipe" />
-        <activity android:name=".ui.TestExo" />
+        <activity android:name=".ui.DetailRecipe"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.TestExo"
+            android:launchMode="singleTop"/>
 
         <receiver android:name=".ui.BakingWidget">
             <intent-filter>

@@ -139,4 +139,10 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
             mMenuAdapter.swapData(null);
         }
    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }

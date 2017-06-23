@@ -70,4 +70,10 @@ public class DetailRecipe extends AppCompatActivity  {
         ingredientList = stringBuilder.toString();
         ingredientTextView.setText(ingredientList);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
