@@ -1,5 +1,9 @@
 package com.example.adeogo.bakingapp.util;
 
+import android.content.ContentValues;
+
+import com.example.adeogo.bakingapp.data.BakingContract;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,34 +11,46 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.adeogo.bakingapp.data.BakingContract.BakingEntry;
+
+import static com.example.adeogo.bakingapp.data.BakingContract.BakingEntry;
+
 /**
  * Created by Adeogo on 6/17/2017.
  */
 
 public class JsonFormat {
-    public static List<String> getListName(String JSONresponse) throws JSONException {
-        List<String> listNames = new ArrayList<String>();
+    public static ContentValues[] getBasisRecipe(String JSONresponse) throws JSONException {
+
         JSONArray jsonArray = new JSONArray(JSONresponse);
         int lengthResponse = jsonArray.length();
+        ContentValues[] contentValues = new ContentValues[lengthResponse];
         for(int i = 0; i < lengthResponse;i++ ){
+            ContentValues contentValues1 = new ContentValues();
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String name = jsonObject.getString("name");
-            listNames.add(name);
+            String imageUrl = jsonObject.getString("image");
+            int serving = jsonObject.getInt("servings");
+            contentValues1.put(BakingEntry.COLUMN_RECIPE_NAME, name);
+            contentValues1.put(BakingEntry.COLUMN_IMAGE,imageUrl);
+            contentValues1.put(BakingEntry.COLUMN_NO_SERVINGS,serving);
+
+            contentValues[i] = contentValues1;
         }
-        return listNames;
+        return contentValues;
     }
 
-    public static List<String> getListImagesUrl(String JSONresponse) throws JSONException {
-        List<String> listImageUrls = new ArrayList<String>();
-        JSONArray jsonArray = new JSONArray(JSONresponse);
-        int lengthResponse = jsonArray.length();
-        for(int i = 0; i < lengthResponse;i++ ){
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String imageUrl = jsonObject.getString("image");
-            listImageUrls.add(imageUrl);
-        }
-        return listImageUrls;
-    }
+//    public static List<String> getListImagesUrl(String JSONresponse) throws JSONException {
+//        List<String> listImageUrls = new ArrayList<String>();
+//        JSONArray jsonArray = new JSONArray(JSONresponse);
+//        int lengthResponse = jsonArray.length();
+//        for(int i = 0; i < lengthResponse;i++ ){
+//            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//            String imageUrl = jsonObject.getString("image");
+//            listImageUrls.add(imageUrl);
+//        }
+//        return listImageUrls;
+//    }
 
     public static List<Integer> getListServings(String JSONresponse) throws JSONException {
         List<Integer> listServings = new ArrayList<Integer>();

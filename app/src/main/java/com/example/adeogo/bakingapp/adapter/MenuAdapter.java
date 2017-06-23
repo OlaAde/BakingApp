@@ -1,6 +1,7 @@
 package com.example.adeogo.bakingapp.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +16,15 @@ import android.widget.TextView;
  * Created by Adeogo on 6/17/2017.
  */
  import com.example.adeogo.bakingapp.R;
+import com.example.adeogo.bakingapp.data.BakingContract;
 
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
-    private List<String> mMenuNameList = null;
-    private List<Integer> mMenuServingsList = null;
-    private List<String> mMenuIconUrlList = null;
     private Context mContext;
+    private Cursor mCursor = null;
 
     public MenuAdapter(Context context,ListItemClickListener mOnClickListener){
         this.mOnClickListener = mOnClickListener;
@@ -48,25 +48,38 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     @Override
     public void onBindViewHolder(MenuAdapter.MenuViewHolder holder, int position) {
-        String menuIconUrl = mMenuIconUrlList.get(position);
-        Log.v("icon at"+ position, menuIconUrl);
-        String menuName = mMenuNameList.get(position);
-        Log.v("menu_name at " + position, menuName);
-        int menuServing = mMenuServingsList.get(position);
+        String menuIconUrl = null ;
+
+        String menuName = null;
+
+        int menuServing = 0;
+
+        if(mCursor!=null){
+            int menuIconIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_IMAGE);
+            int menuNameIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME);
+            int menuServingIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_NO_SERVINGS);
+
+            mCursor.moveToPosition(position);
+            menuIconUrl = mCursor.getString(menuIconIndex);
+            menuName = mCursor.getString(menuNameIndex);
+            menuServing = mCursor.getInt(menuServingIndex);
+
+            Log.v("icon at"+ position, menuIconUrl);
+        }
 
         holder.nameTextView.setText(menuName);
         holder.servingTextView.setText(menuServing + mContext.getString(R.string.serving_base_text));
+        Log.v("menu_name at " + position, menuName);
 
     }
 
     @Override
     public int getItemCount() {
-        if(mMenuServingsList==null){
-            Log.v("Size of Sevings List is",""+ 0 );
+        if(mCursor==null){
             return 0;
         }
         else
-        return mMenuServingsList.size();
+        return mCursor.getCount();
     }
 
    public class MenuViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
@@ -91,10 +104,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
        }
    }
 
-   public void swapData(List<String> menuNameList,List<String> menuIconUrlList, List<Integer> menuServingsList){
-       mMenuNameList = menuNameList;
-       mMenuIconUrlList = menuIconUrlList;
-       mMenuServingsList = menuServingsList;
+   public void swapData(Cursor cursor){
+       if(mCursor == cursor)
+           return ;
+       mCursor = cursor;
+       if(cursor != null)
        this.notifyDataSetChanged();
    }
 }

@@ -1,8 +1,13 @@
 package com.example.adeogo.bakingapp.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +17,13 @@ import android.widget.Toast;
 
 import com.example.adeogo.bakingapp.R;
 import com.example.adeogo.bakingapp.adapter.MenuAdapter;
+import com.example.adeogo.bakingapp.data.BakingContract;
+import com.example.adeogo.bakingapp.sync.BakingSyncIntentService;
+import com.example.adeogo.bakingapp.sync.BakingSyncTask;
+import com.example.adeogo.bakingapp.sync.BakingSyncUtils;
 import com.example.adeogo.bakingapp.util.JsonFormat;
 import com.example.adeogo.bakingapp.util.NetworkUtil;
+import com.facebook.stetho.Stetho;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private List<Integer> mQuantyIngredientsList = null;
     private List<String> mMeasureIngredientsList = null;
 
+    private static final int RECIPE_LOADER_ID = 1;
+
+
     String jsonResponse;
 
     @Override
@@ -46,13 +59,33 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMenuAdapter = new MenuAdapter(this,this);
-        TestTask testTask = new TestTask();
-        testTask.execute(url);
-        mRecyclerView.setAdapter(mMenuAdapter);
+//        TestTask testTask = new TestTask();
+//        testTask.execute(url);
 
+
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader<Cursor> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
+        loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
+
+
+        mRecyclerView.setAdapter(mMenuAdapter);
+        Intent intent = new Intent(this, BakingSyncIntentService.class);
+        Bundle mBundle = new Bundle();
+        mBundle.putString("sortPref", BakingSyncTask.ACTION_FIRSTLOAD );
+        intent.putExtras(mBundle);
+        Stetho.initializeWithDefaults(this);
+        BakingSyncUtils.startImmediateSync(this);
+
+        update();
     }
 
 
+    private void update(){
+        Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
+        refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
+        startService(refreshDatabaseIntent);
+    }
     private void formatData(String response, int id){
         JSONArray stepArray;
         JSONArray ingredArray;
@@ -88,40 +121,63 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         startActivity(intent);
     }
 
+    public class CursorCallback implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private class TestTask extends AsyncTask<String,Void,String>{
         @Override
-        protected String doInBackground(String... params) {
-            String response = null;
-            try {
-                 response = NetworkUtil.getResponseFromHttpUrl(NetworkUtil.buildUrl(params[0]));
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Uri recipesQueryUri = BakingContract.BakingEntry.CONTENT_URI;
+            return new CursorLoader(MainActivity.this,
+                    recipesQueryUri,
+                    null,
+                    null,
+                    null,
+                    null);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return response;
         }
 
         @Override
-        protected void onPostExecute(@NonNull String s) {
-            super.onPostExecute(s);
-            jsonResponse = s;
-            List<String> menuNameList = null;
-            List<String> menuIconUrlList = null;
-            List<Integer> menuServingsList = null;
-
-            try {
-                menuNameList = JsonFormat.getListName(s);
-                menuIconUrlList = JsonFormat.getListImagesUrl(s);
-                menuServingsList = JsonFormat.getListServings(s);
-
-                Log.v("Response", menuNameList.get(1));
-                Log.v("Response", menuIconUrlList.get(2));
-                Log.v("Response", menuServingsList.get(2).toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            mMenuAdapter.swapData(menuNameList,menuIconUrlList,menuServingsList);
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            mMenuAdapter.swapData(data);
         }
-    }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            mMenuAdapter.swapData(null);
+        }
+   }
+//    private class TestTask extends AsyncTask<String,Void,String>{
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String response = null;
+//            try {
+//                 response = NetworkUtil.getResponseFromHttpUrl(NetworkUtil.buildUrl(params[0]));
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return response;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(@NonNull String s) {
+//            super.onPostExecute(s);
+//            jsonResponse = s;
+//            List<String> menuNameList = null;
+//            List<String> menuIconUrlList = null;
+//            List<Integer> menuServingsList = null;
+//
+//            try {
+//                menuNameList = JsonFormat.getListName(s);
+//                menuIconUrlList = JsonFormat.getListImagesUrl(s);
+//                menuServingsList = JsonFormat.getListServings(s);
+//
+//                Log.v("Response", menuNameList.get(1));
+//                Log.v("Response", menuIconUrlList.get(2));
+//                Log.v("Response", menuServingsList.get(2).toString());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            mMenuAdapter.swapData(menuNameList,menuIconUrlList,menuServingsList);
+//        }
+//    }
 }
