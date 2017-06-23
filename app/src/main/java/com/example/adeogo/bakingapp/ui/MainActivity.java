@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adeogo.bakingapp.R;
@@ -44,9 +47,12 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private List<Integer> mQuantyIngredientsList = null;
     private List<String> mMeasureIngredientsList = null;
 
+    private TextView noRecipeTextView;
+
     private static final int RECIPE_LOADER_ID = 1;
 
     private String mRecipeName;
+    private ProgressBar mProgressBar;
 
 
 
@@ -59,13 +65,15 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMenuAdapter = new MenuAdapter(this,this);
-
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        noRecipeTextView = (TextView) findViewById(R.id.no_recipe_tv);
 
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
 
 
         mRecyclerView.setAdapter(mMenuAdapter);
+
         Intent intent = new Intent(this, BakingSyncIntentService.class);
         Bundle mBundle = new Bundle();
         mBundle.putString("sortPref", BakingSyncTask.ACTION_FIRSTLOAD );
@@ -125,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
 
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            mProgressBar.setVisibility(View.VISIBLE);
+
             Uri recipesQueryUri = BakingContract.BakingEntry.CONTENT_URI;
             return new CursorLoader(MainActivity.this,
                     recipesQueryUri,
@@ -136,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+            if(data==null)
+            noRecipeTextView.setVisibility(View.VISIBLE);
             mMenuAdapter.swapData(data);
         }
 

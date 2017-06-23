@@ -4,22 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/partingColor"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000">
+
+
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/media_view"
-            android:layout_width="wrap_content"
-            android:layout_height="600dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_no_video"
-            android:id="@+id/no_video_tv"/>
-    </FrameLayout>
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
 
     <TextView
@@ -27,6 +28,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/full_description_tv"
         android:fontFamily="sans-serif"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:padding="8dp"
+        android:maxLines = "10"
+        android:scrollbars = "vertical"/>
 
 </LinearLayout>

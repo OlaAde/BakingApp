@@ -3,10 +3,10 @@ package com.example.adeogo.bakingapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,13 +66,13 @@ public class ExoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_exo, container, false);
         mContext = getContext();
         mDescTextView = (TextView) rootView.findViewById(R.id.full_description_tv);
+        mDescTextView.setMovementMethod(new ScrollingMovementMethod());
         mDescTextView.setText(mDescription);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.media_view);
-        mNoVideoTextView = (TextView) rootView.findViewById(R.id.no_video_tv);
 
 
 
-        if(mUrlVideo != null&&mUrlVideo !=""){
+        if(mUrlVideo.isEmpty()){
             setNoVideo();
         }
         else
@@ -95,12 +95,10 @@ public class ExoFragment extends Fragment {
 
     private void setNoVideo(){
         mPlayerView.setVisibility(View.GONE);
-        mNoVideoTextView.setVisibility(View.VISIBLE);
     }
 
     private void setThereVideo(){
         mPlayerView.setVisibility(View.VISIBLE);
-        mNoVideoTextView.setVisibility(View.GONE);
     }
 
     void initializePlayer(String UrlVideo) {
