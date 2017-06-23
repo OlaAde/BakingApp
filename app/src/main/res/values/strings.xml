@@ -7,5 +7,8 @@
     <string name="add_widget">Add widget</string>
     <string name="test_text_view">Pie Hoyusing Name</string>
     <string name="test_2_text_view">8rvings</string>
+    <string name="next_button_text">Next</string>
+
+    <string name="prev_button_text">Previous</string>
     <string name="no_recipe">There\'s no recipe in the database</string>
 </resources>

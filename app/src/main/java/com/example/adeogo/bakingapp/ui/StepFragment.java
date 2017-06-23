@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.adeogo.bakingapp.R;
 import com.example.adeogo.bakingapp.adapter.StepAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,9 +75,9 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
 
         else {
             Intent intent = new Intent(mContext, TestExo.class);
-            intent.putExtra("videoUrl", mVideoStepUrlList.get(clickedItemIndex));
-            intent.putExtra("Description", mDescriptionList.get(clickedItemIndex));
-            intent.putExtra("RecipeName", mRecipeName);
+            intent.putStringArrayListExtra("videoUrlList", (ArrayList<String>) mVideoStepUrlList);
+            intent.putStringArrayListExtra("DescriptionList", (ArrayList<String>) mDescriptionList);
+            intent.putExtra("clickedId", clickedItemIndex);
             startActivity(intent);
         }
     }

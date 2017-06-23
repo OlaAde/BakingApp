@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.adeogo.bakingapp.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -17,6 +20,8 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+
+import java.util.List;
 
 public class TestExo extends AppCompatActivity {
 
@@ -43,6 +48,12 @@ public class TestExo extends AppCompatActivity {
     public static final String VIDEO_1 = "http://techslides.com/demos/sample-videos/small.mp4";
     public static final String VIDEO_2 = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
 
+    private List<String> mvideoList;
+    private List<String> mDescriptionList;
+    private int mClickedId;
+    private FragmentManager mFragmentManager;
+    private Button mPreviousButton;
+    private Button mNextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,21 @@ public class TestExo extends AppCompatActivity {
         mPlayerView = (SimpleExoPlayerView) findViewById(R.id.media_view);
         Intent intent = getIntent();
 
-        urlVideo = intent.getStringExtra("videoUrl");
+        mClickedId = intent.getIntExtra("clickedId",0);
+        mDescriptionList = intent.getStringArrayListExtra("DescriptionList");
+        mvideoList = intent.getStringArrayListExtra("videoUrlList");
+
+
+        mNextButton = (Button) findViewById(R.id.nextButton);
+
+        mPreviousButton = (Button) findViewById(R.id.previousButton);
+        if(mClickedId==0)
+            mPreviousButton.setVisibility(View.INVISIBLE);
+
+        if (mClickedId == mDescriptionList.size())
+            mNextButton.setVisibility(View.INVISIBLE);
+
+        urlVideo = mvideoList.get(mClickedId);
         String description = intent.getStringExtra("Description");
         ExoFragment exoFragment = new ExoFragment();
         exoFragment.sendToExoFrag(urlVideo,description);
@@ -62,9 +87,9 @@ public class TestExo extends AppCompatActivity {
         String recipeName = intent.getStringExtra("RecipeName");
 
         getSupportActionBar().setTitle(recipeName);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+         mFragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
+        mFragmentManager.beginTransaction()
                 .add(R.id.container_exo,exoFragment)
                 .commit();
 
@@ -76,7 +101,40 @@ public class TestExo extends AppCompatActivity {
         }
 
     }
+    public void Previous(View view){
+        if(mClickedId == 0 ){
+            mPreviousButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            mPreviousButton.setVisibility(View.VISIBLE);
+            mClickedId = mClickedId - 1;
+            ExoFragment exoFragment = new ExoFragment();
+            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId));
 
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.container_exo,exoFragment)
+                    .commit();
+        }
+
+    }
+
+    public void Next(View view){
+        if(mClickedId==mDescriptionList.size()){
+            mNextButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            mNextButton.setVisibility(View.VISIBLE);
+            mClickedId = mClickedId + 1;
+            ExoFragment exoFragment = new ExoFragment();
+            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId));
+
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.container_exo,exoFragment)
+                    .commit();
+        }
+    }
+
+    
     void initializePlayer() {
         // create a new instance of SimpleExoPlayer
         mPlayer = ExoPlayerFactory.newSimpleInstance(
