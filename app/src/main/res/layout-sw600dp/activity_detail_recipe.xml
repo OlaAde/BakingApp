@@ -33,19 +33,10 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="wrap_content"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:id="@+id/step_description">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/descrip_frag"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/container_exo"/>
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/playerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
 
 </LinearLayout>

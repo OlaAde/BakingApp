@@ -25,8 +25,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import com.example.adeogo.bakingapp.R;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -51,14 +49,8 @@ public class ExoFragment extends Fragment {
 
     private static String mUrlVideo = null;
     private static String mDescription = "Here we have it ncsblbhl.dg";
-    // sample audio for testing exoplayer
-    private static final String NIGERIA_NATIONAL_ANTHEM_MP3 = "http://www.noiseaddicts.com/samples_1w72b820/4237.mp3";
-
-    // sample videos for testing exoplayer
-    private static final String VIDEO_1 = "http://techslides.com/demos/sample-videos/small.mp4";
-    private static final String VIDEO_2 = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
     private  TextView mDescTextView;
-
+    private TextView mNoVideoTextView;
 
 
     public ExoFragment() {
@@ -73,11 +65,18 @@ public class ExoFragment extends Fragment {
         // find the view responsible for visual feedback (media controls & display)
         View rootView = inflater.inflate(R.layout.fragment_exo, container, false);
         mContext = getContext();
-        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.media_view);
         mDescTextView = (TextView) rootView.findViewById(R.id.full_description_tv);
         mDescTextView.setText(mDescription);
+        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.media_view);
+        mNoVideoTextView = (TextView) rootView.findViewById(R.id.no_video_tv);
 
 
+
+        if(mUrlVideo != null&&mUrlVideo !=""){
+            setNoVideo();
+        }
+        else
+            setThereVideo();
 
 
         // if we have saved player state, restore it
@@ -94,7 +93,20 @@ public class ExoFragment extends Fragment {
         mDescription = Description;
     }
 
-    void initializePlayer() {
+    private void setNoVideo(){
+        mPlayerView.setVisibility(View.GONE);
+        mNoVideoTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void setThereVideo(){
+        mPlayerView.setVisibility(View.VISIBLE);
+        mNoVideoTextView.setVisibility(View.GONE);
+    }
+
+    void initializePlayer(String UrlVideo) {
+
+        if(mUrlVideo == null&&mUrlVideo=="")
+            return;
         // create a new instance of SimpleExoPlayer
         mPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(mContext),
@@ -108,7 +120,7 @@ public class ExoFragment extends Fragment {
         // resume playback position
         mPlayer.seekTo(currentWindow, playbackPosition);
 
-        Uri uri = Uri.parse(mUrlVideo);
+        Uri uri = Uri.parse( UrlVideo);
         MediaSource mediaSource = buildMediaSource(uri);
 
         // now we are ready to start playing our media files
@@ -124,17 +136,6 @@ public class ExoFragment extends Fragment {
         // this return a single mediaSource object. i.e. no next, previous buttons to play next/prev media file
         return new ExtractorMediaSource(uri, dataSourceFactory, extractorSourceFactory, null, null);
 
-        /*
-         * Uncomment the line below to play multiple meidiaSources in sequence aka playlist (and totally without buffering!)
-         * NOTE: you have to comment the return statement just above this comment
-         */
-
-        /*
-          ExtractorMediaSource videoSource1 = new ExtractorMediaSource(Uri.parse(VIDEO_1), dataSourceFactory, extractorSourceFactory, null, null);
-          ExtractorMediaSource videoSource2 = new ExtractorMediaSource(Uri.parse(VIDEO_2), dataSourceFactory, extractorSourceFactory, null, null);
-          // returns a mediaSource collection
-          return new ConcatenatingMediaSource(videoSource1, audioSource, videoSource2);
-         */
 
     }
 
@@ -176,7 +177,8 @@ public class ExoFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
-            initializePlayer();
+            initializePlayer(mUrlVideo
+            );
 
         }
     }
@@ -187,7 +189,7 @@ public class ExoFragment extends Fragment {
         // start in pure full screen
         hideSystemUi();
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
-            initializePlayer();
+            initializePlayer(mUrlVideo);
             mDescTextView.setText(mDescription);
         }
     }

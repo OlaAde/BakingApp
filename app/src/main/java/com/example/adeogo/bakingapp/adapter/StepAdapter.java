@@ -23,12 +23,12 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     private Context mContext;
     private List<String> mShrtStepDescList = null;
     private List<String> mVideoStepUrlList = null;
+    private Boolean mTwoPane = false;
 
     public StepAdapter(Context context, StepAdapter.ListItemClickListener mOnClickListener){
         this.mOnClickListener = mOnClickListener;
         mContext = context;
     }
-
 
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
@@ -51,7 +51,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         String videoUrl = mVideoStepUrlList.get(position);
 
         holder.stepDescripTextView.setText(position+1 + ".  " + shortDecrip);
-        if (videoUrl != "" || videoUrl!=null)
+        if (videoUrl != "" && videoUrl!=null)
         holder.videoImageView.setImageResource(R.drawable.ic_play_arrow_black_48dp);
     }
 
@@ -84,9 +84,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         }
     }
 
-    public void swapData(List<String> shrtStepDescList, List<String> videoStepUrlList){
+    public void swapData(List<String> shrtStepDescList, List<String> videoStepUrlList, Boolean twoPane){
         mShrtStepDescList = shrtStepDescList;
         mVideoStepUrlList = videoStepUrlList;
+        mTwoPane = twoPane;
         this.notifyDataSetChanged();
     }
 

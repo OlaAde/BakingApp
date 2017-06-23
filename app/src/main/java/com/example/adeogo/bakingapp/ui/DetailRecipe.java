@@ -20,6 +20,7 @@ public class DetailRecipe extends AppCompatActivity  {
     List<String> mIngredientsList;
     List<String> mMeasureIngredientsList;
     List<Integer> mQuantyIngredientsList;
+    private Boolean mTwoPane = false;
 
 
     @Override
@@ -34,11 +35,25 @@ public class DetailRecipe extends AppCompatActivity  {
         mIngredientsList = intent.getStringArrayListExtra("IngredientsList");
         mMeasureIngredientsList = intent.getStringArrayListExtra("MeasureIngredientsList");
         mQuantyIngredientsList = intent.getIntegerArrayListExtra("QuantyIngredientsList");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
+        if(findViewById(R.id.container_exo) !=null){
+            mTwoPane = true;
+            ExoFragment exoFragment = new ExoFragment();
+            exoFragment.sendToExoFrag(mVideoStepUrlList.get(0),mStepDescriptionList.get(0));
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.container_exo,exoFragment)
+                    .commit();
+
+        }
 
         StepFragment stepFragment = new StepFragment();
-        stepFragment.setData(mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
+        stepFragment.setData(mTwoPane, mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
