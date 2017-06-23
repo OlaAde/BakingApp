@@ -72,7 +72,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
 
         holder.nameTextView.setText(menuName);
-        holder.servingTextView.setText(menuServing + mContext.getString(R.string.serving_base_text));
+        holder.servingTextView.setText(menuServing + " "+ mContext.getString(R.string.serving_base_text));
         Log.v("menu_name at " + position, menuName);
 
     }

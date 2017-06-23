@@ -51,8 +51,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         String videoUrl = mVideoStepUrlList.get(position);
 
         holder.stepDescripTextView.setText(position+1 + ".  " + shortDecrip);
-        if (videoUrl != "" && videoUrl!=null)
-        holder.videoImageView.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+
+        Log.v("videoUrl" + position + 1, videoUrl);
+        if (videoUrl.isEmpty()){
+            holder.videoImageView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            holder.videoImageView.setVisibility(View.VISIBLE);
+            holder.videoImageView.setImageResource(R.mipmap.play_icon);
+        }
+
     }
 
     @Override

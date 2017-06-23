@@ -29,8 +29,8 @@ public class MainActivityBasicTest {
 
     @Test
     public void listClick(){
-        // Click item at position 3
+        // Click item at position 1
         onView(withId(R.id.menu_rv))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
     }
 }

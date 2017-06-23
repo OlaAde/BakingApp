@@ -4,19 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.adeogo.bakingapp.ui.DetailRecipe"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/partingColor">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_gravity="center_horizontal"
         android:fontFamily="monospace"
         android:textColor="#000"
-        android:id="@+id/ingredient_list_tv"/>
+        android:id="@+id/ingredient_list_tv"
+        tools:text="@string/test_text_view"/>
 
     <FrameLayout
         android:id="@+id/id_container_rv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
