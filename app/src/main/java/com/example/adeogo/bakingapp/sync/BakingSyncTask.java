@@ -29,6 +29,7 @@ public class BakingSyncTask {
             try {
                 String JSONResponse  = NetworkUtil.getResponseFromHttpUrl(url);
                 ContentValues[] recipeList = JsonFormat.getBasisRecipe(JSONResponse);
+
                 if(recipeList!=null && recipeList.length!=0){
                     ContentResolver movieContentResolver = context.getContentResolver();
 

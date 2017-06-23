@@ -25,6 +25,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     final private ListItemClickListener mOnClickListener;
     private Context mContext;
     private Cursor mCursor = null;
+    private String mResponseJSon = null;
 
     public MenuAdapter(Context context,ListItemClickListener mOnClickListener){
         this.mOnClickListener = mOnClickListener;
@@ -33,7 +34,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
 
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onListItemClick(int clickedItemIndex, String JsonResponse);
     }
 
     @Override
@@ -57,12 +58,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         if(mCursor!=null){
             int menuIconIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_IMAGE);
             int menuNameIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME);
+            int responseIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RESPONSE);
             int menuServingIndex = mCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_NO_SERVINGS);
 
             mCursor.moveToPosition(position);
             menuIconUrl = mCursor.getString(menuIconIndex);
             menuName = mCursor.getString(menuNameIndex);
             menuServing = mCursor.getInt(menuServingIndex);
+            mResponseJSon = mCursor.getString(responseIndex);
+
 
             Log.v("icon at"+ position, menuIconUrl);
         }
@@ -99,7 +103,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
        @Override
        public void onClick(View v) {
            int clickedPosition = getAdapterPosition();
-           mOnClickListener.onListItemClick(clickedPosition);
+           mOnClickListener.onListItemClick(clickedPosition, mResponseJSon);
 
        }
    }

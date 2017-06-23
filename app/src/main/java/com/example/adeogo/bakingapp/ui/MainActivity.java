@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private RecyclerView mRecyclerView;
     private MenuAdapter mMenuAdapter;
     private LinearLayoutManager mLayoutManager;
-    private  String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     private List<String> mShrtStepDescList = null;
     private List<String> mVideoStepUrlList = null;
     private List<String> mStepDescriptionList = null;
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private static final int RECIPE_LOADER_ID = 1;
 
 
-    String jsonResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMenuAdapter = new MenuAdapter(this,this);
-//        TestTask testTask = new TestTask();
-//        testTask.execute(url);
-
 
 
         LoaderManager loaderManager = getSupportLoaderManager();
@@ -107,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick(int clickedItemIndex, String JSOnResponse) {
         Toast.makeText(this, ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
-        formatData(jsonResponse,clickedItemIndex);
+        formatData(JSOnResponse,clickedItemIndex);
         Intent intent =  new Intent(MainActivity.this, DetailRecipe.class);
         intent.putStringArrayListExtra("ShrtStepDescList", (ArrayList<String>) mShrtStepDescList);
         intent.putStringArrayListExtra("StepDescriptionList", (ArrayList<String>) mStepDescriptionList);
@@ -145,39 +140,4 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
             mMenuAdapter.swapData(null);
         }
    }
-//    private class TestTask extends AsyncTask<String,Void,String>{
-//        @Override
-//        protected String doInBackground(String... params) {
-//            String response = null;
-//            try {
-//                 response = NetworkUtil.getResponseFromHttpUrl(NetworkUtil.buildUrl(params[0]));
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return response;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(@NonNull String s) {
-//            super.onPostExecute(s);
-//            jsonResponse = s;
-//            List<String> menuNameList = null;
-//            List<String> menuIconUrlList = null;
-//            List<Integer> menuServingsList = null;
-//
-//            try {
-//                menuNameList = JsonFormat.getListName(s);
-//                menuIconUrlList = JsonFormat.getListImagesUrl(s);
-//                menuServingsList = JsonFormat.getListServings(s);
-//
-//                Log.v("Response", menuNameList.get(1));
-//                Log.v("Response", menuIconUrlList.get(2));
-//                Log.v("Response", menuServingsList.get(2).toString());
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            mMenuAdapter.swapData(menuNameList,menuIconUrlList,menuServingsList);
-//        }
-//    }
 }

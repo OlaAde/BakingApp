@@ -12,7 +12,7 @@ import android.util.Log;
 public class BakingDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipeDb.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public BakingDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -24,6 +24,7 @@ public class BakingDbHelper extends SQLiteOpenHelper {
                 BakingContract.BakingEntry._ID                + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 BakingContract.BakingEntry. COLUMN_RECIPE_NAME + " TEXT NOT NULL, " +
                 BakingContract.BakingEntry. COLUMN_IMAGE + " TEXT, " +
+                BakingContract.BakingEntry. COLUMN_RESPONSE + " TEXT NOT NULL, " +
                 BakingContract.BakingEntry.COLUMN_NO_SERVINGS + " INTEGER NOT NULL);";
         Log.v("Create_State,ent", CREATE_TABLE);
         db.execSQL(CREATE_TABLE);
