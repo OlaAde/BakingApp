@@ -59,6 +59,9 @@ public class TestExo extends AppCompatActivity {
         ExoFragment exoFragment = new ExoFragment();
         exoFragment.sendToExoFrag(urlVideo,description);
 
+        String recipeName = intent.getStringExtra("RecipeName");
+
+        getSupportActionBar().setTitle(recipeName);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()

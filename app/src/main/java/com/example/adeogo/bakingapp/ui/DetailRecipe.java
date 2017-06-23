@@ -3,6 +3,7 @@ package com.example.adeogo.bakingapp.ui;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class DetailRecipe extends AppCompatActivity  {
     List<String> mMeasureIngredientsList;
     List<Integer> mQuantyIngredientsList;
     private Boolean mTwoPane = false;
+    private String mRecipeName;
 
 
     @Override
@@ -35,9 +37,10 @@ public class DetailRecipe extends AppCompatActivity  {
         mIngredientsList = intent.getStringArrayListExtra("IngredientsList");
         mMeasureIngredientsList = intent.getStringArrayListExtra("MeasureIngredientsList");
         mQuantyIngredientsList = intent.getIntegerArrayListExtra("QuantyIngredientsList");
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mRecipeName = intent.getStringExtra("recipe_name");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(mRecipeName);
 
 
         if(findViewById(R.id.container_exo) !=null){
@@ -54,7 +57,7 @@ public class DetailRecipe extends AppCompatActivity  {
         }
 
         StepFragment stepFragment = new StepFragment();
-        stepFragment.setData(mTwoPane, mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
+        stepFragment.setData(mTwoPane,mRecipeName, mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

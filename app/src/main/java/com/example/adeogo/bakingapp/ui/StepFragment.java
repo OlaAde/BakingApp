@@ -33,6 +33,8 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
     private List<Integer> mQuantityIngredientList;
     private List<String> mDescriptionList;
     private Boolean mTwoPane = false;
+    private String mRecipeName;
+
 
     public StepFragment() {
     }
@@ -74,11 +76,12 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
             Intent intent = new Intent(mContext, TestExo.class);
             intent.putExtra("videoUrl", mVideoStepUrlList.get(clickedItemIndex));
             intent.putExtra("Description", mDescriptionList.get(clickedItemIndex));
+            intent.putExtra("RecipeName", mRecipeName);
             startActivity(intent);
         }
     }
 
-    public void setData(Boolean TwoPane, List<String> ShrtStepDescList, List<String> VideoStepUrlList, List<String> IngredientList, List<String> MeasureIngredientList, List<Integer> QuantityIngredientList, List<String> DescriptionList) {
+    public void setData(Boolean TwoPane,String RecipeName, List<String> ShrtStepDescList, List<String> VideoStepUrlList, List<String> IngredientList, List<String> MeasureIngredientList, List<Integer> QuantityIngredientList, List<String> DescriptionList) {
         mTwoPane = TwoPane;
         mShrtStepDescList = ShrtStepDescList;
         mVideoStepUrlList = VideoStepUrlList;
@@ -86,5 +89,6 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
         mMeasureIngredientList = MeasureIngredientList;
         mQuantityIngredientList = QuantityIngredientList;
         mDescriptionList = DescriptionList;
+        mRecipeName = RecipeName;
     }
 }

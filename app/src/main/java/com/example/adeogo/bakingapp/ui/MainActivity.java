@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
 
     private static final int RECIPE_LOADER_ID = 1;
 
+    private String mRecipeName;
+
 
 
     @Override
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
 
 
         LoaderManager loaderManager = getSupportLoaderManager();
-        Loader<Cursor> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
         loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
 
 
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         JSONArray stepArray;
         JSONArray ingredArray;
         try {
+
+            mRecipeName = JsonFormat.getRecipeName(response,id);
             stepArray = JsonFormat.getStepsArray(response,id);
             ingredArray = JsonFormat.getIngredientsArray(response,id);
 
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     @Override
     public void onListItemClick(int clickedItemIndex, String JSOnResponse) {
         Toast.makeText(this, ""+clickedItemIndex, Toast.LENGTH_SHORT).show();
+
         formatData(JSOnResponse,clickedItemIndex);
         Intent intent =  new Intent(MainActivity.this, DetailRecipe.class);
         intent.putStringArrayListExtra("ShrtStepDescList", (ArrayList<String>) mShrtStepDescList);
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         intent.putStringArrayListExtra("IngredientsList", (ArrayList<String>) mIngredientsList);
         intent.putStringArrayListExtra("MeasureIngredientsList", (ArrayList<String>) mMeasureIngredientsList);
         intent.putIntegerArrayListExtra("QuantyIngredientsList", (ArrayList<Integer>) mQuantyIngredientsList);
+        intent.putExtra("recipe_name",mRecipeName);
         startActivity(intent);
     }
 
