@@ -1,7 +1,10 @@
 package com.example.adeogo.bakingapp.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private List<Integer> mQuantyIngredientsList = null;
     private List<String> mMeasureIngredientsList = null;
 
-    private TextView noRecipeTextView;
+    private TextView noInternetTextView;
 
     private static final int RECIPE_LOADER_ID = 1;
 
@@ -66,29 +69,48 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         mRecyclerView.setHasFixedSize(true);
         mMenuAdapter = new MenuAdapter(this,this);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        noRecipeTextView = (TextView) findViewById(R.id.no_recipe_tv);
-
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
+        noInternetTextView = (TextView) findViewById(R.id.no_internet_tv);
 
 
         mRecyclerView.setAdapter(mMenuAdapter);
+
+        Stetho.initializeWithDefaults(this);
+    }
+
+
+    private void noInternetView(){
+        noInternetTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void yesInternetView(){
+        noInternetTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+    private void update(){
 
         Intent intent = new Intent(this, BakingSyncIntentService.class);
         Bundle mBundle = new Bundle();
         mBundle.putString("sortPref", BakingSyncTask.ACTION_FIRSTLOAD );
         intent.putExtras(mBundle);
-        Stetho.initializeWithDefaults(this);
-        BakingSyncUtils.startImmediateSync(this);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader<String[]> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
+        if (isNetworkAvailable() == true){
+            yesInternetView();
+            BakingSyncUtils.startImmediateSync(this);
+            Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
+            refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
+            startService(refreshDatabaseIntent);
+            if(loader == null){
+                loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
+            }
+            else {
+                loaderManager.restartLoader(RECIPE_LOADER_ID,null, new CursorCallback());
+            }
+        }
+        else
+            noInternetView();
 
-        update();
-    }
-
-
-    private void update(){
-        Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
-        refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
-        startService(refreshDatabaseIntent);
     }
     private void formatData(String response, int id){
         JSONArray stepArray;
@@ -148,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mProgressBar.setVisibility(View.INVISIBLE);
             if(data==null)
-            noRecipeTextView.setVisibility(View.VISIBLE);
+            noInternetTextView.setVisibility(View.VISIBLE);
             mMenuAdapter.swapData(data);
         }
 
@@ -157,5 +179,21 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
             mMenuAdapter.swapData(null);
         }
    }
+    public boolean isNetworkAvailable() {
+        boolean status = false;
+        try {
+            ConnectivityManager cm =
+                    (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            status = activeNetwork != null &&
+                    activeNetwork.isConnectedOrConnecting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        Log.v("Internet_statussssss", "" + status);
+        return status;
+
+    }
 }

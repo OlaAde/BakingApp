@@ -12,4 +12,5 @@
     <string name="prev_button_text">Previous</string>
     <string name="step">Step</string>
     <string name="no_recipe">There\'s no recipe in the database</string>
+    <string name="no_internet">There\'s no connection to the internet</string>
 </resources>
