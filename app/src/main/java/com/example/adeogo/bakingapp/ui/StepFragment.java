@@ -4,6 +4,7 @@ package com.example.adeogo.bakingapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
     private LinearLayoutManager mLayoutManager;
     private Context mContext;
 
+    private Parcelable mListState;
     private List<String> mShrtStepDescList;
     private List<String> mVideoStepUrlList;
     private List<String> mIngredientList;
@@ -34,7 +36,6 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
     private List<Integer> mQuantityIngredientList;
     private List<String> mDescriptionList;
     private Boolean mTwoPane = false;
-    private String mRecipeName;
 
 
     public StepFragment() {
@@ -56,6 +57,11 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
         mRecyclerView.setAdapter(mStepAdapter);
 
         mStepAdapter.swapData(mShrtStepDescList, mVideoStepUrlList, mTwoPane);
+
+        if(savedInstanceState!=null){
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
+
         return rootView;
     }
 
@@ -90,6 +96,15 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
         mMeasureIngredientList = MeasureIngredientList;
         mQuantityIngredientList = QuantityIngredientList;
         mDescriptionList = DescriptionList;
-        mRecipeName = RecipeName;
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mListState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable("list_state", mListState);
+    }
+
+
 }
