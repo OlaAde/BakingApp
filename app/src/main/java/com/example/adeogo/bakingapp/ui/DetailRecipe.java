@@ -120,7 +120,7 @@ public class DetailRecipe extends AppCompatActivity  {
                 }
 
                 else{
-                    //Going to be made favorites as it is not checked
+                    // Going to be made favorites as it is not checked
                     condition_favorite = 1;
                     movieValues.put(BakingContract.BakingEntry.COLUMN_FAVORITE,condition_favorite);
                     int updatedMovie =  getContentResolver().update(BakingContract.BakingEntry

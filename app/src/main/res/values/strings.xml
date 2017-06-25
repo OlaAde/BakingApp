@@ -16,4 +16,6 @@
 
     <string name="adding_to_favorites">Added to the favorites list</string>
     <string name="removing_from_favorites">Removed from the favorites list</string>
+
+    <string name="test_tv">Lets make 8 Servings of this beautiful meal </string>
 </resources>

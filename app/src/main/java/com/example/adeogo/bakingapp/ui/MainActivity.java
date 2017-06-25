@@ -97,10 +97,10 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         Loader<String[]> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
         if (isNetworkAvailable() == true){
             yesInternetView();
-            BakingSyncUtils.startImmediateSync(this);
             Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
             refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
             startService(refreshDatabaseIntent);
+
             if(loader == null){
                 loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
             }
