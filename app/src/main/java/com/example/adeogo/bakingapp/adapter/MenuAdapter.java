@@ -67,7 +67,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             menuServing = mCursor.getInt(menuServingIndex);
             mResponseJSon = mCursor.getString(responseIndex);
 
-
             Log.v("icon at"+ position, menuIconUrl);
         }
 

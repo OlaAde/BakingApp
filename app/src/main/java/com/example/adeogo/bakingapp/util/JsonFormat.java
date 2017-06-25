@@ -40,32 +40,6 @@ public class JsonFormat {
         return contentValues;
     }
 
-//    public static List<String> getListImagesUrl(String JSONresponse) throws JSONException {
-//        List<String> listImageUrls = new ArrayList<String>();
-//        JSONArray jsonArray = new JSONArray(JSONresponse);
-//        int lengthResponse = jsonArray.length();
-//        for(int i = 0; i < lengthResponse;i++ ){
-//            JSONObject jsonObject = jsonArray.getJSONObject(i);
-//            String imageUrl = jsonObject.getString("image");
-//            listImageUrls.add(imageUrl);
-//        }
-//        return listImageUrls;
-//    }
-
-//    public static List<Integer> getListServings(String JSONresponse) throws JSONException {
-//        List<Integer> listServings = new ArrayList<Integer>();
-//        JSONArray jsonArray = new JSONArray(JSONresponse);
-//        int lengthResponse = jsonArray.length();
-//        for(int i = 0; i < lengthResponse;i++ ){
-//            JSONObject jsonObject = jsonArray.getJSONObject(i);
-//            int serving = jsonObject.getInt("servings");
-//            listServings.add(serving);
-//        }
-//        return listServings;
-//    }
-
-
-
     public static String getRecipeName(String JSonResponse, int id) throws JSONException {
         JSONArray jsonArray = new JSONArray(JSonResponse);
         JSONObject jsonObject = jsonArray.getJSONObject(id);

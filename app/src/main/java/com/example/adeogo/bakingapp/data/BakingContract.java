@@ -24,5 +24,6 @@ public class BakingContract {
         public static final String COLUMN_NO_SERVINGS = "num_servings";
         public static final String COLUMN_IMAGE = "menu_image";
         public static final String COLUMN_RESPONSE ="json_response";
+        public static final String COLUMN_FAVORITE ="favorite";
     }
 }

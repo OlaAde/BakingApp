@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
 
 
         mRecyclerView.setAdapter(mMenuAdapter);
-
+        update();
         Stetho.initializeWithDefaults(this);
     }
 
