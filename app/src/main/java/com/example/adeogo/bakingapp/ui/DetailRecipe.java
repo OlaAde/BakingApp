@@ -1,14 +1,20 @@
 package com.example.adeogo.bakingapp.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adeogo.bakingapp.R;
+import com.example.adeogo.bakingapp.data.BakingContract;
 
 import java.util.List;
 
@@ -23,7 +29,10 @@ public class DetailRecipe extends AppCompatActivity  {
     List<Integer> mQuantyIngredientsList;
     private Boolean mTwoPane = false;
     private String mRecipeName;
-
+    private int condition_favorite;
+    private ContentValues movieValues = new ContentValues();
+    private String selection = BakingContract.BakingEntry.COLUMN_RECIPE_NAME + "=?";
+    private static String[] selectionArgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,7 @@ public class DetailRecipe extends AppCompatActivity  {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(mRecipeName);
 
+        selectionArgs = new String[]{mRecipeName};
 
         if(findViewById(R.id.container_exo) !=null){
             mTwoPane = true;
@@ -79,5 +89,49 @@ public class DetailRecipe extends AppCompatActivity  {
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe, menu);
+        if(condition_favorite == 1){
+            menu.findItem(R.id.action_favorites).setIcon(R.mipmap.favorites_dark);
+        }
+        else
+            menu.findItem(R.id.action_favorites).setIcon(R.mipmap.favorites_light);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int idSelected = item.getItemId();
+        switch (idSelected){
+            case R.id.action_favorites:
+                if(condition_favorite == 1){
+                    // unfavorited as it is checked already
+                    condition_favorite = 0;
+
+                    movieValues.put(BakingContract.BakingEntry.COLUMN_FAVORITE,condition_favorite);
+                    int updatedMovie =  getContentResolver().update(BakingContract.BakingEntry
+                            .CONTENT_URI,movieValues,selection,selectionArgs);
+                    Log.v("Movie Updated" ,""+ updatedMovie );
+                    item.setIcon(R.mipmap.favorites_light);
+                    Toast.makeText(this,getText(R.string.removing_from_favorites),Toast.LENGTH_SHORT).show();
+                }
+
+                else{
+                    //Going to be made favorites as it is not checked
+                    condition_favorite = 1;
+                    movieValues.put(BakingContract.BakingEntry.COLUMN_FAVORITE,condition_favorite);
+                    int updatedMovie =  getContentResolver().update(BakingContract.BakingEntry
+                            .CONTENT_URI,movieValues,selection,selectionArgs);
+                    Log.v("Movie Updated" ,""+ updatedMovie );
+                    item.setIcon(R.mipmap.favorites_dark);
+
+                    Toast.makeText(this, getText(R.string.adding_to_favorites), Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

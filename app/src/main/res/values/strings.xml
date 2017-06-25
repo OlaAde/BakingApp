@@ -13,4 +13,7 @@
     <string name="step">Step</string>
     <string name="no_recipe">There\'s no recipe in the database</string>
     <string name="no_internet">There\'s no connection to the internet</string>
+
+    <string name="adding_to_favorites">Added to the favorites list</string>
+    <string name="removing_from_favorites">Removed from the favorites list</string>
 </resources>
