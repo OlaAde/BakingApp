@@ -12,7 +12,7 @@ import android.util.Log;
 public class BakingDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipeDb.db";
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     public BakingDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);

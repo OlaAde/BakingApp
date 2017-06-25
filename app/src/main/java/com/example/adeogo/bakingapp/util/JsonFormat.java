@@ -34,6 +34,7 @@ public class JsonFormat {
             contentValues1.put(BakingEntry.COLUMN_RECIPE_NAME, name);
             contentValues1.put(BakingEntry.COLUMN_IMAGE,imageUrl);
             contentValues1.put(BakingEntry.COLUMN_RESPONSE, JSONresponse);
+            contentValues1.put(BakingEntry.COLUMN_FAVORITE, 0);
             contentValues1.put(BakingEntry.COLUMN_NO_SERVINGS,serving);
             contentValues[i] = contentValues1;
         }
