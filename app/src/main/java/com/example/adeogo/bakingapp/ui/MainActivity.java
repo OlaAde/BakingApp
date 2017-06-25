@@ -78,38 +78,48 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     }
 
 
-    private void noInternetView(){
-        noInternetTextView.setVisibility(View.VISIBLE);
+
+    private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
+        noInternetTextView.setVisibility(View.VISIBLE);
     }
 
-    private void yesInternetView(){
+    private void showRecipiesView() {
+        /* First, to make sure the error is invisible */
         noInternetTextView.setVisibility(View.INVISIBLE);
+        /* Then, to make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
+
+
     private void update(){
 
-        Intent intent = new Intent(this, BakingSyncIntentService.class);
-        Bundle mBundle = new Bundle();
-        mBundle.putString("sortPref", BakingSyncTask.ACTION_FIRSTLOAD );
-        intent.putExtras(mBundle);
-        LoaderManager loaderManager = getSupportLoaderManager();
-        Loader<String[]> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
-        if (isNetworkAvailable() == true){
-            yesInternetView();
+            LoaderManager loaderManager = getSupportLoaderManager();
+            Loader<Cursor> loader = loaderManager.getLoader(RECIPE_LOADER_ID);
+            Bundle mBundle = new Bundle();
+            mBundle.putString("sortPref", BakingSyncTask.ACTION_FIRSTLOAD );
+
+        if (isNetworkAvailable() == true) {
+            showRecipiesView();
+            mMenuAdapter.swapData(null);
             Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
             refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
             startService(refreshDatabaseIntent);
+            if(loader == null)
+                loaderManager.initLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
+            else
+                loaderManager.restartLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
+        } else {
+            if(loader == null)
+            {
+                showErrorMessage();
+                return;
+            }
+            else
+                loaderManager.initLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
 
-            if(loader == null){
-                loaderManager.initLoader(RECIPE_LOADER_ID,null,new CursorCallback());
-            }
-            else {
-                loaderManager.restartLoader(RECIPE_LOADER_ID,null, new CursorCallback());
-            }
         }
-        else
-            noInternetView();
+
 
     }
     private void formatData(String response, int id){
