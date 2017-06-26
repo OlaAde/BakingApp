@@ -9,9 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.example.adeogo.bakingapp.data.BakingContract.BakingEntry;
+import com.example.adeogo.bakingapp.models.Recipe;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import static com.example.adeogo.bakingapp.data.BakingContract.BakingEntry;
 
@@ -20,22 +24,22 @@ import static com.example.adeogo.bakingapp.data.BakingContract.BakingEntry;
  */
 
 public class JsonFormat {
-    public static ContentValues[] getBasisRecipe(String JSONresponse) throws JSONException {
 
+    public static ContentValues[] getBasisRecipe(String JSONresponse) throws JSONException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        List<Recipe> recipes = Arrays.asList(gson.fromJson(JSONresponse, Recipe[].class));
         JSONArray jsonArray = new JSONArray(JSONresponse);
         int lengthResponse = jsonArray.length();
         ContentValues[] contentValues = new ContentValues[lengthResponse];
         for(int i = 0; i < lengthResponse;i++ ){
             ContentValues contentValues1 = new ContentValues();
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String name = jsonObject.getString("name");
-            String imageUrl = jsonObject.getString("image");
-            int serving = jsonObject.getInt("servings");
-            contentValues1.put(BakingEntry.COLUMN_RECIPE_NAME, name);
-            contentValues1.put(BakingEntry.COLUMN_IMAGE,imageUrl);
+
+            contentValues1.put(BakingEntry.COLUMN_RECIPE_NAME, recipes.get(i).getRecipeName());
+            contentValues1.put(BakingEntry.COLUMN_IMAGE,recipes.get(i).getImageLink());
             contentValues1.put(BakingEntry.COLUMN_RESPONSE, JSONresponse);
             contentValues1.put(BakingEntry.COLUMN_FAVORITE, 0);
-            contentValues1.put(BakingEntry.COLUMN_NO_SERVINGS,serving);
+            contentValues1.put(BakingEntry.COLUMN_NO_SERVINGS,recipes.get(i).getNumServings());
             contentValues[i] = contentValues1;
         }
         return contentValues;

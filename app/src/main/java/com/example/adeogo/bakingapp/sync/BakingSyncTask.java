@@ -28,6 +28,7 @@ public class BakingSyncTask {
             URL url = NetworkUtil.buildUrl(urlString);
             try {
                 String JSONResponse  = NetworkUtil.getResponseFromHttpUrl(url);
+
                 ContentValues[] recipeList = JsonFormat.getBasisRecipe(JSONResponse);
 
                 if(recipeList!=null && recipeList.length!=0){
