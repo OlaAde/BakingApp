@@ -7,7 +7,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -114,7 +113,6 @@ public class DetailRecipe extends AppCompatActivity  {
                     movieValues.put(BakingContract.BakingEntry.COLUMN_FAVORITE,condition_favorite);
                     int updatedMovie =  getContentResolver().update(BakingContract.BakingEntry
                             .CONTENT_URI,movieValues,selection,selectionArgs);
-                    Log.v("Movie Updated" ,""+ updatedMovie );
                     item.setIcon(R.mipmap.favorites_light);
                     Toast.makeText(this,getText(R.string.removing_from_favorites),Toast.LENGTH_SHORT).show();
                 }
@@ -125,7 +123,6 @@ public class DetailRecipe extends AppCompatActivity  {
                     movieValues.put(BakingContract.BakingEntry.COLUMN_FAVORITE,condition_favorite);
                     int updatedMovie =  getContentResolver().update(BakingContract.BakingEntry
                             .CONTENT_URI,movieValues,selection,selectionArgs);
-                    Log.v("Movie Updated" ,""+ updatedMovie );
                     item.setIcon(R.mipmap.favorites_dark);
 
                     Toast.makeText(this, getText(R.string.adding_to_favorites), Toast.LENGTH_SHORT).show();

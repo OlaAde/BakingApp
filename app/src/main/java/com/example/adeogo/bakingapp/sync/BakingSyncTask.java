@@ -22,7 +22,6 @@ import java.net.URL;
 
 public class BakingSyncTask {
     static public String ACTION_FIRSTLOAD = "first_load";
-    private static String[] selectionArgs  = { "0" };
     static private String urlString = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     synchronized public static void syncRecipes(Context context, String action){
         if(ACTION_FIRSTLOAD.equals(action)){

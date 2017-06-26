@@ -41,13 +41,6 @@ public class TestExo extends AppCompatActivity {
     public static final String PLAYBACK_POSITION = "playback_position";
 
     public static String urlVideo = null;
-    // sample audio for testing exoplayer
-    public static final String NIGERIA_NATIONAL_ANTHEM_MP3 = "http://www.noiseaddicts.com/samples_1w72b820/4237.mp3";
-
-    // sample videos for testing exoplayer
-    public static final String VIDEO_1 = "http://techslides.com/demos/sample-videos/small.mp4";
-    public static final String VIDEO_2 = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-
     private List<String> mvideoList;
     private List<String> mDescriptionList;
     private List<String> mThumbnailList;

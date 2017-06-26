@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
     private ProgressBar mProgressBar;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +75,15 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         Stetho.initializeWithDefaults(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
-        noInternetTextView.setVisibility(View.VISIBLE);
+        Toast.makeText(this,R.string.no_internet,Toast.LENGTH_LONG).show();
     }
 
     private void showRecipiesView() {
@@ -99,25 +103,24 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         if (isNetworkAvailable() == true) {
             showRecipiesView();
             mMenuAdapter.swapData(null);
-            Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
-            refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
-            startService(refreshDatabaseIntent);
-            if(loader == null)
+
+            if(loader == null){
+                Intent refreshDatabaseIntent = new Intent(this,BakingSyncIntentService.class);
+                refreshDatabaseIntent.setAction(BakingSyncTask.ACTION_FIRSTLOAD);
+                startService(refreshDatabaseIntent);
                 loaderManager.initLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
+            }
             else
                 loaderManager.restartLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
         } else {
             if(loader == null)
             {
                 showErrorMessage();
-                return;
+                loaderManager.initLoader(RECIPE_LOADER_ID,null, new CursorCallback());
             }
             else
-                loaderManager.initLoader(RECIPE_LOADER_ID,mBundle,new CursorCallback());
-
+            loaderManager.restartLoader(RECIPE_LOADER_ID,null,new CursorCallback());
         }
-
-
     }
     private void formatData(String response, int id){
         JSONArray stepArray;
@@ -176,8 +179,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             mProgressBar.setVisibility(View.INVISIBLE);
-            if(data==null)
-            noInternetTextView.setVisibility(View.VISIBLE);
             mMenuAdapter.swapData(data);
         }
 
@@ -199,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
             e.printStackTrace();
             return false;
         }
-        Log.v("Internet_statussssss", "" + status);
         return status;
 
     }

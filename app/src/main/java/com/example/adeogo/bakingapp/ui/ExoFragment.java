@@ -3,15 +3,15 @@ package com.example.adeogo.bakingapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.example.adeogo.bakingapp.R;
@@ -26,8 +26,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.squareup.picasso.Picasso;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -49,8 +47,6 @@ public class ExoFragment extends Fragment {
     private static final String PLAYBACK_POSITION = "playback_position";
 
     private Context mContext;
-
-    private ImageView mThumbnailImageView;
 
     private static String mUrlVideo = null;
     private static String mDescription = "Here we have it ncsblbhl.dg";
@@ -74,15 +70,9 @@ public class ExoFragment extends Fragment {
         mDescTextView.setMovementMethod(new ScrollingMovementMethod());
         mDescTextView.setText(mDescription);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.media_view);
-        mThumbnailImageView = (ImageView) rootView.findViewById(R.id.thumbnail_iv);
 
-        if(!mUrlVideo.isEmpty()){
+        if(!mUrlVideo.isEmpty() || !mThumbnail.isEmpty()){
             setThereVideo();
-        }
-        else if(!mThumbnail.isEmpty()){
-            setThumbnail();
-            Log.v("Thumbnail", mThumbnail);
-            loadthumbnail(mThumbnail);
         }
         else
             setNoVideo();
@@ -96,10 +86,6 @@ public class ExoFragment extends Fragment {
         return rootView;
     }
 
-    private void loadthumbnail(String url){
-        Uri uri = Uri.parse(url);
-        Picasso.with(mContext).load(uri).into(mThumbnailImageView);
-    }
     public void sendToExoFrag(String VideoUrl, String Description, String Thumbnail){
         mUrlVideo = VideoUrl;
         mDescription = Description;
@@ -108,17 +94,11 @@ public class ExoFragment extends Fragment {
 
     private void setNoVideo(){
         mPlayerView.setVisibility(View.GONE);
-        mThumbnailImageView.setVisibility(View.GONE);
         mDescTextView.setVisibility(View.VISIBLE);
     }
 
     private void setThereVideo(){
         mPlayerView.setVisibility(View.VISIBLE);
-        mThumbnailImageView.setVisibility(View.INVISIBLE);
-    }
-    private void setThumbnail(){
-        mThumbnailImageView.setVisibility(View.VISIBLE);
-        mPlayerView.setVisibility(View.INVISIBLE);
     }
 
     void initializePlayer(String UrlVideo) {
@@ -183,21 +163,33 @@ public class ExoFragment extends Fragment {
     // This is just an implementation detail to have a pure full screen experience. Nothing fancy here
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        View decorView = getActivity().getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
+
+
+    private boolean checkIfLandscape(){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            return true;
+        else return false;
+    }
     @Override
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
-            initializePlayer(mUrlVideo
-            );
-
+            if(mUrlVideo.isEmpty() && !mThumbnail.isEmpty())
+            {
+                mUrlVideo = mThumbnail;
+            }
+            initializePlayer(mUrlVideo);
+            mDescTextView.setText(mDescription);
         }
     }
 
@@ -205,8 +197,15 @@ public class ExoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // start in pure full screen
-        hideSystemUi();
+        if(checkIfLandscape())
+            hideSystemUi();
+        else mPlayerView.setMinimumHeight(1500);
+
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
+            if(mUrlVideo.isEmpty() && !mThumbnail.isEmpty())
+            {
+                mUrlVideo = mThumbnail;
+            }
             initializePlayer(mUrlVideo);
             mDescTextView.setText(mDescription);
         }
