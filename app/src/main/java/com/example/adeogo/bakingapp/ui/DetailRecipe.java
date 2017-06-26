@@ -56,7 +56,7 @@ public class DetailRecipe extends AppCompatActivity  {
         if(findViewById(R.id.container_exo) !=null){
             mTwoPane = true;
             ExoFragment exoFragment = new ExoFragment();
-            exoFragment.sendToExoFrag(mVideoStepUrlList.get(0),mStepDescriptionList.get(0));
+            exoFragment.sendToExoFrag(mVideoStepUrlList.get(0),mStepDescriptionList.get(0),mThumbnailStepUrlList.get(0));
 
             FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -67,7 +67,7 @@ public class DetailRecipe extends AppCompatActivity  {
         }
 
         StepFragment stepFragment = new StepFragment();
-        stepFragment.setData(mTwoPane,mRecipeName, mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
+        stepFragment.setData(mTwoPane,mRecipeName, mThumbnailStepUrlList, mShrtStepDescList,mVideoStepUrlList,mIngredientsList,mMeasureIngredientsList,mQuantyIngredientsList,mStepDescriptionList);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

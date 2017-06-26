@@ -34,6 +34,7 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
     private List<String> mIngredientList;
     private List<String> mMeasureIngredientList;
     private List<Integer> mQuantityIngredientList;
+    private List<String> mThumbnailList;
     private List<String> mDescriptionList;
     private Boolean mTwoPane = false;
 
@@ -70,7 +71,7 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
     public void onListItemClick(int clickedItemIndex) {
         if (mTwoPane) {
             ExoFragment exoFragment = new ExoFragment();
-            exoFragment.sendToExoFrag(mVideoStepUrlList.get(clickedItemIndex), mDescriptionList.get(clickedItemIndex));
+            exoFragment.sendToExoFrag(mVideoStepUrlList.get(clickedItemIndex), mDescriptionList.get(clickedItemIndex),mThumbnailList.get(clickedItemIndex));
 
             FragmentManager fragmentManager = getFragmentManager();
 
@@ -83,12 +84,13 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
             Intent intent = new Intent(mContext, TestExo.class);
             intent.putStringArrayListExtra("videoUrlList", (ArrayList<String>) mVideoStepUrlList);
             intent.putStringArrayListExtra("DescriptionList", (ArrayList<String>) mDescriptionList);
+            intent.putStringArrayListExtra("ThumbnailList", (ArrayList<String>) mThumbnailList);
             intent.putExtra("clickedId", clickedItemIndex);
             startActivity(intent);
         }
     }
 
-    public void setData(Boolean TwoPane,String RecipeName, List<String> ShrtStepDescList, List<String> VideoStepUrlList, List<String> IngredientList, List<String> MeasureIngredientList, List<Integer> QuantityIngredientList, List<String> DescriptionList) {
+    public void setData(Boolean TwoPane,String RecipeName, List<String> ThumbnailList, List<String> ShrtStepDescList, List<String> VideoStepUrlList, List<String> IngredientList, List<String> MeasureIngredientList, List<Integer> QuantityIngredientList, List<String> DescriptionList) {
         mTwoPane = TwoPane;
         mShrtStepDescList = ShrtStepDescList;
         mVideoStepUrlList = VideoStepUrlList;
@@ -96,6 +98,7 @@ public class StepFragment extends Fragment implements StepAdapter.ListItemClickL
         mMeasureIngredientList = MeasureIngredientList;
         mQuantityIngredientList = QuantityIngredientList;
         mDescriptionList = DescriptionList;
+        mThumbnailList = ThumbnailList;
     }
 
 

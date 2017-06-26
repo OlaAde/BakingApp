@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         Stetho.initializeWithDefaults(this);
     }
 
-
-
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
         noInternetTextView.setVisibility(View.VISIBLE);
@@ -90,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements MenuAdapter.ListI
         /* Then, to make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
-
 
     private void update(){
 

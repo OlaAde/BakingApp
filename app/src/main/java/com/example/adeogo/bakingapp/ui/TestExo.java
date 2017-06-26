@@ -50,10 +50,12 @@ public class TestExo extends AppCompatActivity {
 
     private List<String> mvideoList;
     private List<String> mDescriptionList;
+    private List<String> mThumbnailList;
     private int mClickedId;
     private FragmentManager mFragmentManager;
     private Button mPreviousButton;
     private Button mNextButton;
+    private String mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class TestExo extends AppCompatActivity {
         mClickedId = intent.getIntExtra("clickedId",0);
         mDescriptionList = intent.getStringArrayListExtra("DescriptionList");
         mvideoList = intent.getStringArrayListExtra("videoUrlList");
+        mThumbnailList = intent.getStringArrayListExtra("ThumbnailList");
 
 
         mNextButton = (Button) findViewById(R.id.nextButton);
@@ -80,9 +83,9 @@ public class TestExo extends AppCompatActivity {
             mNextButton.setVisibility(View.INVISIBLE);
 
         urlVideo = mvideoList.get(mClickedId);
-        String description = intent.getStringExtra("Description");
+        mDescription = mDescriptionList.get(mClickedId);
         ExoFragment exoFragment = new ExoFragment();
-        exoFragment.sendToExoFrag(urlVideo,description);
+        exoFragment.sendToExoFrag(urlVideo,mDescription, mThumbnailList.get(mClickedId));
 
         String recipeName = intent.getStringExtra("RecipeName");
 
@@ -109,7 +112,7 @@ public class TestExo extends AppCompatActivity {
             mPreviousButton.setVisibility(View.VISIBLE);
             mClickedId = mClickedId - 1;
             ExoFragment exoFragment = new ExoFragment();
-            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId));
+            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId),mThumbnailList.get(mClickedId));
 
             mFragmentManager.beginTransaction()
                     .replace(R.id.container_exo,exoFragment)
@@ -126,7 +129,7 @@ public class TestExo extends AppCompatActivity {
             mNextButton.setVisibility(View.VISIBLE);
             mClickedId = mClickedId + 1;
             ExoFragment exoFragment = new ExoFragment();
-            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId));
+            exoFragment.sendToExoFrag(mvideoList.get(mClickedId),mDescriptionList.get(mClickedId),mThumbnailList.get(mClickedId));
 
             mFragmentManager.beginTransaction()
                     .replace(R.id.container_exo,exoFragment)

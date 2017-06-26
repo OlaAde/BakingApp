@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adeogo.bakingapp.R;
@@ -24,6 +26,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,10 +50,12 @@ public class ExoFragment extends Fragment {
 
     private Context mContext;
 
+    private ImageView mThumbnailImageView;
+
     private static String mUrlVideo = null;
     private static String mDescription = "Here we have it ncsblbhl.dg";
     private  TextView mDescTextView;
-    private TextView mNoVideoTextView;
+    private String mThumbnail = null;
 
 
     public ExoFragment() {
@@ -69,15 +74,18 @@ public class ExoFragment extends Fragment {
         mDescTextView.setMovementMethod(new ScrollingMovementMethod());
         mDescTextView.setText(mDescription);
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.media_view);
+        mThumbnailImageView = (ImageView) rootView.findViewById(R.id.thumbnail_iv);
 
-
-
-        if(mUrlVideo.isEmpty()){
-            setNoVideo();
+        if(!mUrlVideo.isEmpty()){
+            setThereVideo();
+        }
+        else if(!mThumbnail.isEmpty()){
+            setThumbnail();
+            Log.v("Thumbnail", mThumbnail);
+            loadthumbnail(mThumbnail);
         }
         else
-            setThereVideo();
-
+            setNoVideo();
 
         // if we have saved player state, restore it
         if (savedInstanceState != null) {
@@ -88,17 +96,29 @@ public class ExoFragment extends Fragment {
         return rootView;
     }
 
-    public void sendToExoFrag(String VideoUrl, String Description){
+    private void loadthumbnail(String url){
+        Uri uri = Uri.parse(url);
+        Picasso.with(mContext).load(uri).into(mThumbnailImageView);
+    }
+    public void sendToExoFrag(String VideoUrl, String Description, String Thumbnail){
         mUrlVideo = VideoUrl;
         mDescription = Description;
+        mThumbnail = Thumbnail;
     }
 
     private void setNoVideo(){
         mPlayerView.setVisibility(View.GONE);
+        mThumbnailImageView.setVisibility(View.GONE);
+        mDescTextView.setVisibility(View.VISIBLE);
     }
 
     private void setThereVideo(){
         mPlayerView.setVisibility(View.VISIBLE);
+        mThumbnailImageView.setVisibility(View.INVISIBLE);
+    }
+    private void setThumbnail(){
+        mThumbnailImageView.setVisibility(View.VISIBLE);
+        mPlayerView.setVisibility(View.INVISIBLE);
     }
 
     void initializePlayer(String UrlVideo) {
@@ -207,7 +227,5 @@ public class ExoFragment extends Fragment {
             releasePlayer();
         }
     }
-
-
 
 }
