@@ -52,7 +52,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         holder.stepDescripTextView.setText(position+1 + ".  " + shortDecrip);
 
-        Log.v("videoUrl" + position + 1, videoUrl);
         if (videoUrl.isEmpty()){
             holder.videoImageView.setVisibility(View.INVISIBLE);
         }
@@ -66,7 +65,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     @Override
     public int getItemCount() {
         if(mVideoStepUrlList==null){
-            Log.v("Size of Sevings List is",""+ 0 );
             return 0;
         }
         else

@@ -77,8 +77,12 @@ public class DetailRecipe extends AppCompatActivity  {
         String ingredientList;
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append("Ingredients:");
         for(int i = 0 ; i < mIngredientsList.size(); i++){
-            stringBuilder.append("\n" + mQuantyIngredientsList.get(i)+ " " + mMeasureIngredientsList.get(i)+ " of " + mIngredientsList.get(i));
+            if(mQuantyIngredientsList.get(i) != 1)
+            stringBuilder.append("\n" + mQuantyIngredientsList.get(i)+ " " + mMeasureIngredientsList.get(i)+ "s of " + mIngredientsList.get(i));
+            else
+                stringBuilder.append("\n" + mQuantyIngredientsList.get(i)+ " " + mMeasureIngredientsList.get(i)+ " of " + mIngredientsList.get(i));
         }
         ingredientList = stringBuilder.toString();
         ingredientTextView.setText(ingredientList);
