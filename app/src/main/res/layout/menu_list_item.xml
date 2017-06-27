@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/menu_iv"
-        android:src="@mipmap/ic_launcher_round"
+        tools:src="@mipmap/ic_launcher_round"
         android:paddingRight="@dimen/padding_16"
         android:paddingLeft="@dimen/padding_16"/>
 

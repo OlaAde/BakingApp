@@ -2,6 +2,7 @@ package com.example.adeogo.bakingapp.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.TextView;
  */
  import com.example.adeogo.bakingapp.R;
 import com.example.adeogo.bakingapp.data.BakingContract;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -72,6 +74,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         holder.nameTextView.setText(menuName);
         holder.servingTextView.setText(menuServing + " "+ mContext.getString(R.string.serving_base_text));
+
+        if(menuIconUrl.isEmpty()){
+            holder.menuImageView.setImageResource(R.mipmap.ic_launcher_round);
+        }
+        else
+        {
+            Uri uri = Uri.parse(menuIconUrl);
+            Picasso.with(mContext).load(uri).into(holder.menuImageView);
+        }
+
+
         Log.v("menu_name at " + position, menuName);
 
     }
