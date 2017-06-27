@@ -26,8 +26,7 @@ public class BakingDbHelper extends SQLiteOpenHelper {
                 BakingContract.BakingEntry. COLUMN_IMAGE + " TEXT, " +
                 BakingContract.BakingEntry. COLUMN_RESPONSE + " TEXT NOT NULL, " +
                 BakingContract.BakingEntry. COLUMN_FAVORITE + " INTEGER NOT NULL, " +
-                BakingContract.BakingEntry. COLUMN_NO_SERVINGS + " INTEGER NOT NULL, " +
-                BakingContract.BakingEntry.COLUMN_FIRST_LIST_INGREDIENT + " TEXT NOT NULL);";
+                BakingContract.BakingEntry.COLUMN_NO_SERVINGS + " INTEGER NOT NULL);";
         db.execSQL(CREATE_TABLE);
     }
 
