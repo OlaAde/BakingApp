@@ -44,14 +44,8 @@ public class BakingWidget extends AppWidgetProvider {
         mRecipeCursor.moveToFirst();
 
         int responseJsonIndex = mRecipeCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RESPONSE);
-        int recipeNameIndex = mRecipeCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_RECIPE_NAME);
-        int numServingsIndex = mRecipeCursor.getColumnIndex(BakingContract.BakingEntry.COLUMN_NO_SERVINGS);
-
 
         String responseJSon = mRecipeCursor.getString(responseJsonIndex);
-        String recipeName = mRecipeCursor.getString(recipeNameIndex);
-        int numServings = mRecipeCursor.getInt(numServingsIndex);
-
         try {
             JSONArray ingredArray = JsonFormat.getIngredientsArray(responseJSon,0);
             mIngredientList = JsonFormat.getIngredientList(ingredArray);

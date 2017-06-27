@@ -72,7 +72,7 @@ public class TestExo extends AppCompatActivity {
         if(mClickedId==0)
             mPreviousButton.setVisibility(View.INVISIBLE);
 
-        if (mClickedId == mDescriptionList.size())
+        if (mClickedId == mvideoList.size())
             mNextButton.setVisibility(View.INVISIBLE);
 
         urlVideo = mvideoList.get(mClickedId);
