@@ -9,6 +9,11 @@
     <string name="test_2_text_view">8rvings</string>
     <string name="next_button_text">Next</string>
 
+    <string name="nutella_pie">Nutella Pie</string>
+    <string name="brownies">Brownies</string>
+    <string name="cheese_cake">Cheesecake</string>
+    <string name="yellow_cake">Yellow Cake</string>
+
     <string name="prev_button_text">Previous</string>
     <string name="step">Step</string>
     <string name="no_recipe">There\'s no recipe in the database</string>

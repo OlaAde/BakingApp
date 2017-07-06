@@ -21,6 +21,7 @@ import com.example.adeogo.bakingapp.data.BakingContract;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
@@ -76,7 +77,20 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         holder.servingTextView.setText(menuServing + " "+ mContext.getString(R.string.serving_base_text));
 
         if(menuIconUrl.isEmpty()){
-            holder.menuImageView.setImageResource(R.mipmap.ic_launcher_round);
+
+
+            if(Objects.equals(menuName,mContext.getString(R.string.brownies))){
+                holder.menuImageView.setImageResource(R.drawable.brownies);
+            }
+            else if(Objects.equals(menuName,mContext.getString(R.string.cheese_cake))){
+                holder.menuImageView.setImageResource(R.drawable.cheese_cake);
+            }
+            else if(Objects.equals(menuName,mContext.getString(R.string.nutella_pie))){
+                holder.menuImageView.setImageResource(R.drawable.nutella_pie);
+            }
+            else if (Objects.equals(menuName,mContext.getString(R.string.yellow_cake))){
+                holder.menuImageView.setImageResource(R.drawable.yellow_cake);
+            }
         }
         else
         {
